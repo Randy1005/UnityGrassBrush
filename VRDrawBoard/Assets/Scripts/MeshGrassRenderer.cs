@@ -6,7 +6,7 @@ public class MeshGrassRenderer : MonoBehaviour
 {
     
     InputEventController inputEventController;
-    Camera camera;
+    Camera cam;
 
     public Mesh mesh;
     public Material material;
@@ -17,7 +17,7 @@ public class MeshGrassRenderer : MonoBehaviour
     private void Awake()
     {
         inputEventController = InputEventController.instance;
-        camera = Camera.main;
+        cam = Camera.main;
 
         matrices = new List<Matrix4x4>(meshNumber);
     }
@@ -32,7 +32,6 @@ public class MeshGrassRenderer : MonoBehaviour
 
     private void Update()
     {
-
         if (matrices != null)
             Graphics.DrawMeshInstanced(mesh, 0, material, matrices);
     }
@@ -64,9 +63,9 @@ public class MeshGrassRenderer : MonoBehaviour
     {
         Debug.Log("Left Mouse clicked.");
         RaycastHit hit = new RaycastHit();
-        if (GetRaycastHit(camera.transform.position, camera.transform.forward, ref hit))
+        if (GetRaycastHit(cam.transform.position, cam.transform.forward, ref hit))
         {
-            matrices.Add(Matrix4x4.TRS(hit.point, Quaternion.Euler(0f, 0f, 0f), Vector3.one));
+            matrices.Add(Matrix4x4.TRS(hit.point, Quaternion.Euler(90.0f, 0f, 0f), Vector3.one));
         }
         else
         {

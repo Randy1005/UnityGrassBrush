@@ -76,10 +76,16 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _GrassBlades: 1
+    - _GrassHeight: 0
+    - _GrassWidth: 1
+    - _MaxCameraDistance: 10
     - _Metallic: 0.65
+    - _MinimunGrassBlades: 1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _PositionRandomness: 0
     - _Rotation: 0
     - _RotationRandom: 0.174
     - _Smoothness: 0.62
