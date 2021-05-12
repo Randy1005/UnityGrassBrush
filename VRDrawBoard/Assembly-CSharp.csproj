@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\DenistyMapping\TestScript.cs" />
+     <Compile Include="Assets\Scripts\GridMeshGenerator.cs" />
      <Compile Include="Assets\Scripts\InputEvent.cs" />
      <Compile Include="Assets\Scripts\InputEventController.cs" />
      <Compile Include="Assets\Scripts\MeshGrassRenderer.cs" />

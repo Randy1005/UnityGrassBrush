@@ -39,6 +39,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GradientMap:
+        m_Texture: {fileID: 2800000, guid: a617b0f5269b96c40bea2add3df1bbe0, type: 3}
+        m_Scale: {x: 9.44, y: 6.04}
+        m_Offset: {x: -1.69, y: 1.58}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -76,16 +80,16 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GrassBlades: 1
-    - _GrassHeight: 0
-    - _GrassWidth: 1
+    - _GrassBlades: 7.6
+    - _GrassHeight: 0.96
+    - _GrassWidth: 0
     - _MaxCameraDistance: 10
     - _Metallic: 0.65
-    - _MinimunGrassBlades: 1
+    - _MinimunGrassBlades: 6.13
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _PositionRandomness: 0
+    - _PositionRandomness: 2.74
     - _Rotation: 0
     - _RotationRandom: 0.174
     - _Smoothness: 0.62
@@ -94,14 +98,14 @@ Material:
     - _SrcBlend: 1
     - _TessellationUniform: 7.5
     - _TranslucentGain: 0.27
-    - _TriangleOffset: 0.1
+    - _TriangleOffset: 0
     - _UVSec: 0
     - _WindScale: 1
     - _WindStrength: 1
     - _ZWrite: 1
     m_Colors:
     - _BottomColor: {r: 0.018689923, g: 0.18867922, b: 0.018689923, a: 1}
-    - _Color: {r: 0.0040049767, g: 0.2830189, b: 0.03484336, a: 1}
+    - _Color: {r: 0.041963343, g: 0.38679248, b: 0.081285976, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _TopColor: {r: 0.3822612, g: 0.7830189, b: 0, a: 1}
     - _WindFrequency: {r: 0.05, g: 0.05, b: 0, a: 0}
