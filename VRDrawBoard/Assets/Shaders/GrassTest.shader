@@ -6,12 +6,12 @@ Properties
         _Color ("Color", Color) = (1,1,1,1)
         _GradientMap("Gradient map", 2D) = "white" {}
 
-        //Position and dimensions
+        // Position and dimensions
         _GrassHeight("Grass height", float) = 0
         _GrassWidth("Grass width", Range(0.0, 1.0)) = 1.0
         _PositionRandomness("Position randomness", float) = 0
 
-        //Grass blades
+        // Grass blades
         _GrassBlades("Grass blades per triangle", Range(0, 15)) = 1
         _MinimunGrassBlades("Minimum grass blades per triangle", Range(0, 15)) = 1
         _MaxCameraDistance("Max camera distance", float) = 10
@@ -33,6 +33,7 @@ Properties
             #pragma target 4.0
 
             #pragma multi_compile_instancing
+            // #pragma shader_feature_local _GrassBlades
  
             #include "UnityCG.cginc"
 
@@ -121,10 +122,9 @@ Properties
                 float3 normal = normalize(cross(IN[1].vertex - IN[0].vertex, IN[2].vertex - IN[0].vertex));
 
                 // determine blade number
-                // int grassBlades = ceil(lerp(_GrassBlades, _MinimunGrassBlades, saturate(distance(_WorldSpaceCameraPos, mul(unity_ObjectToWorld, IN[0].vertex)) / _MaxCameraDistance)));
                 int grassBlades = _GrassBlades;
 
-                for (unsigned int i = 0; i < grassBlades; i++) {
+                for (uint i = 0; i < grassBlades; i++) {
                     float r1 = random(mul(unity_ObjectToWorld, IN[0].vertex).xz * (i+1));
                     float r2 = random(mul(unity_ObjectToWorld, IN[1].vertex).xz * (i+1));
 

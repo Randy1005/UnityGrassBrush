@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(Material))]
 public class TestScript : MonoBehaviour
 {
     // mesh component of the object we attached to
@@ -14,17 +16,26 @@ public class TestScript : MonoBehaviour
     List<Vector3> bladeRootPositionCenters;
     
     // density of grass blades
-    [SerializeField, Range(0, 5)]
-    private int density;
-
-    public int Density {
+    [SerializeField, Range(2, 15)]
+    [Tooltip("density of grass blades (density increases starting from mass center of each triangle)")]
+    private float density;
+    public float Density {
         get { return density; }
-        set { density = Mathf.Clamp(value, 0, 5); }
+        set { density = value; }
     }
 
+    // cache density on last frame update
+    float previousDensity;
+
+    // mesh instance transform matrices
+    List<Matrix4x4> meshInstanceMatrices;
+
+    private Renderer rend;
+
+    // material to use on mesh
+    public Material grassMaterial;
 
 
-    
 
     void Start()
     {
@@ -36,20 +47,41 @@ public class TestScript : MonoBehaviour
         bladeRootPositions = new List<Vector3>();
         bladeRootPositionCenters = new List<Vector3>();
 
-        CalculateBladePositions(density);
+        // calculate root positions of the grass blades
+        // CalculateBladePositions(density);
 
-        Debug.Log("mass centers: " + bladeRootPositionCenters.Count);
-        Debug.Log("all blade positions: " + bladeRootPositions.Count);
+        // cache density for this frame update
+        previousDensity = density;
 
-        foreach (Vector3 pos in bladeRootPositionCenters) {
-            Debug.Log(pos);
-        }
+        // initialize mesh instance transform matrices
+        meshInstanceMatrices = new List<Matrix4x4>();
+
+        // initialize grass density through editing shader
+        grassMaterial.SetFloat("_GrassBlades", 2.0f);
         
+        // store mesh instance transfrom matrices
+        meshInstanceMatrices.Add(Matrix4x4.TRS(mesh.bounds.center, Quaternion.identity, Vector3.one));
     }
 
     void Update()
     {
+        // update density if user changed during runtime
+        if (density != previousDensity) {
+            // CalculateBladePositions(density);
+            Debug.Log("density: " + density);
+            Debug.Log("_GrassBlades: " + grassMaterial.GetFloat("_GrassBlades"));
+        }
 
+        // set shader data from material
+        grassMaterial.SetFloat("_GrassBlades", density);
+
+        // draw mesh instances
+        if (meshInstanceMatrices != null && meshInstanceMatrices.Count != 0) {
+            Graphics.DrawMeshInstanced(mesh, 0, grassMaterial, meshInstanceMatrices);
+        }
+
+       previousDensity = density;
+     
     }
 
     private void OnDrawGizmos() {
@@ -59,9 +91,6 @@ public class TestScript : MonoBehaviour
             Gizmos.DrawSphere(pos, 0.02f);
         }  
 
-        // foreach (var pos in bladeRootPositionCenters) {
-        //     Gizmos.DrawSphere(pos, 0.02f);
-        // }  
     }
 
     void CalculateBladePositions(int i_density) {
@@ -92,7 +121,7 @@ public class TestScript : MonoBehaviour
             bladeRootPositions = bladeRootPositionCenters;
         }
         else { 
-            foreach (Vector3 positions in bladeRootPositionCenters) {
+            foreach (Vector3 positions in bladeRootPositionCenters.ToArray()) {
                 bladeRootPositions.Add(positions);
             }
 
@@ -126,4 +155,5 @@ public class TestScript : MonoBehaviour
 
         }
     }
+
 }

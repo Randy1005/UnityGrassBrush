@@ -36,14 +36,14 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\DenistyMapping\TestScript.cs" />
      <Compile Include="Assets\Scripts\GridMeshGenerator.cs" />
      <Compile Include="Assets\Scripts\InputEvent.cs" />
      <Compile Include="Assets\Scripts\InputEventController.cs" />
-     <Compile Include="Assets\Scripts\MeshGrassRenderer.cs" />
-     <Compile Include="Assets\Scripts\PlaceObject.cs" />
-     <Compile Include="Assets\Scripts\PlayerMotion.cs" />
+     <Compile Include="Assets\Scripts\RaycastGrassRender\CameraController.cs" />
+     <Compile Include="Assets\Scripts\RaycastGrassRender\MeshGrassRenderer.cs" />
+     <Compile Include="Assets\Scripts\RaycastGrassRender\PlaceObject.cs" />
+     <Compile Include="Assets\Scripts\RaycastGrassRender\PlayerMotion.cs" />
      <Compile Include="Assets\StandardAssets\Environment\Water (Basic)\Scripts\WaterBasic.cs" />
      <Compile Include="Assets\StandardAssets\Environment\Water\Water\Scripts\Displace.cs" />
      <Compile Include="Assets\StandardAssets\Environment\Water\Water\Scripts\GerstnerDisplace.cs" />
