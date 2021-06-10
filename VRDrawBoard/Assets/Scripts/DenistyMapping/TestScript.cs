@@ -35,8 +35,6 @@ public class TestScript : MonoBehaviour
     // material to use on mesh
     public Material grassMaterial;
 
-
-
     void Start()
     {
         // get mesh component
@@ -68,12 +66,11 @@ public class TestScript : MonoBehaviour
         // update density if user changed during runtime
         if (density != previousDensity) {
             // CalculateBladePositions(density);
-            Debug.Log("density: " + density);
-            Debug.Log("_GrassBlades: " + grassMaterial.GetFloat("_GrassBlades"));
-        }
 
-        // set shader data from material
-        grassMaterial.SetFloat("_GrassBlades", density);
+            // set shader data from material
+            grassMaterial.SetFloat("_GrassBlades", density);
+
+        }
 
         // draw mesh instances
         if (meshInstanceMatrices != null && meshInstanceMatrices.Count != 0) {
@@ -85,11 +82,11 @@ public class TestScript : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
+        // Gizmos.color = Color.red;
 
-        foreach (var pos in bladeRootPositions) {
-            Gizmos.DrawSphere(pos, 0.02f);
-        }  
+        // foreach (var pos in bladeRootPositions) {
+        //     Gizmos.DrawSphere(pos, 0.02f);
+        // }  
 
     }
 
