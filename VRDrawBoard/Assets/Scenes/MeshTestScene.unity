@@ -211,7 +211,7 @@ Transform:
   m_GameObject: {fileID: 119120877}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3.4511, y: 3.4511, z: 3.4511}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -228,7 +228,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7512bd70274776a40852a86e70679bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefabModel: {fileID: 100000, guid: c91c1eb85782d5748ace27eb4d7415bb, type: 3}
+  numModelInstances: 1
   density: 2.87
+  terrainHeight: 0
   grassMaterial: {fileID: 2100000, guid: dc23b46c0890b774bb9bbeb2aa16645d, type: 2}
 --- !u!43 &173454284
 Mesh:
@@ -563,13 +566,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643971935}
-  m_LocalRotation: {x: 0.072501495, y: -0, z: -0, w: 0.99736834}
-  m_LocalPosition: {x: 0.01, y: 2.82, z: -10}
+  m_LocalRotation: {x: 0.23787387, y: 0.10419508, z: -0.025674934, w: 0.9653498}
+  m_LocalPosition: {x: -2.53, y: 7.13, z: -11.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 8.315001, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 27.685001, y: 12.321001, z: 0}
 --- !u!1 &2133431717
 GameObject:
   m_ObjectHideFlags: 0

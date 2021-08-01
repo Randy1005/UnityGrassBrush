@@ -6,8 +6,22 @@ using UnityEngine;
 [RequireComponent(typeof(Material))]
 public class TestScript : MonoBehaviour
 {
-    // mesh component of the object we attached to
-    Mesh mesh;
+    // mesh component of the plane object we attached to
+    Mesh planeMesh;
+
+    // prefab of the model we wish to use for gpu instancing (trees, flowers, etc.)
+    public GameObject prefabModel;
+
+    // number of model instances
+    public int numModelInstances;
+
+    // model mesh instances transform matrices
+    List<Matrix4x4> modelInstanceMatrices;
+
+    Mesh modelMesh;
+    MeshFilter[] modelMeshFilters;
+    Renderer[] modelRenderers;
+    Material modelMaterial;
 
     // list of grass blade root positions
     List<Vector3> bladeRootPositions;
@@ -24,89 +38,133 @@ public class TestScript : MonoBehaviour
         set { density = value; }
     }
 
+    // height map of terrain
+    [SerializeField, Range(0, 5)]
+    [Tooltip("height of noise sampled terrain")]
+    private float terrainHeight;
+    public float TerrainHeight {
+        get { return terrainHeight; }
+        set { terrainHeight = value; }
+    }
+
     // cache density on last frame update
     float previousDensity;
 
-    // mesh instance transform matrices
-    List<Matrix4x4> meshInstanceMatrices;
+    // cache sampled terrain height on last frame update
+    float previousTerrainHeight;
 
-    private Renderer rend;
+    // plane mesh instance transform matrices
+    List<Matrix4x4> planeMeshInstanceMatrices;
 
     // material to use on mesh
     public Material grassMaterial;
 
     void Start()
     {
-        // get mesh component
-        mesh = GetComponent<MeshFilter>().mesh;
-        Debug.Assert(mesh != null);
-
-        // initialize grass blade positions
-        bladeRootPositions = new List<Vector3>();
-        bladeRootPositionCenters = new List<Vector3>();
-
-        // calculate root positions of the grass blades
-        // CalculateBladePositions(density);
-
-        // cache density for this frame update
+        // get plane mesh component
+        planeMesh = GetComponent<MeshFilter>().mesh;
+        Debug.Assert(planeMesh != null);
+        
+        // cache density, terrain height for this frame update
         previousDensity = density;
 
         // initialize mesh instance transform matrices
-        meshInstanceMatrices = new List<Matrix4x4>();
+        planeMeshInstanceMatrices = new List<Matrix4x4>();
+        modelInstanceMatrices = new List<Matrix4x4>();
 
         // initialize grass density through editing shader
         grassMaterial.SetFloat("_GrassBlades", 2.0f);
         
         // store mesh instance transfrom matrices
-        meshInstanceMatrices.Add(Matrix4x4.TRS(mesh.bounds.center, Quaternion.identity, Vector3.one));
+        planeMeshInstanceMatrices.Add(Matrix4x4.TRS(planeMesh.bounds.center, Quaternion.identity, Vector3.one));
+
+
+        Debug.Assert(prefabModel != null);
+
+        // get model mesh filter
+        MeshFilter modelMeshFilter = prefabModel.GetComponent<MeshFilter>();
+        if (modelMeshFilter) {
+            modelMesh = modelMeshFilter.sharedMesh;
+            modelMaterial = prefabModel.GetComponent<Renderer>().sharedMaterial;
+        }
+
+        
+        // if a prefab is made up of multiple meshes
+        if (modelMesh == null)
+            modelMeshFilters = prefabModel.GetComponentsInChildren<MeshFilter>();
+        
+        if (modelMaterial == null) {
+            modelRenderers = prefabModel.GetComponentsInChildren<Renderer>();
+        }
+
+
+
+        // add model mesh instance transfrom matrices
+        // TODO: randomize positions within plane mesh bounds
+        modelInstanceMatrices.Add(Matrix4x4.TRS(planeMesh.bounds.center, Quaternion.identity, Vector3.one * 0.5f));
+
+        
     }
 
     void Update()
     {
         // update density if user changed during runtime
         if (density != previousDensity) {
-            // CalculateBladePositions(density);
-
             // set shader data from material
             grassMaterial.SetFloat("_GrassBlades", density);
-
         }
 
-        // draw mesh instances
-        if (meshInstanceMatrices != null && meshInstanceMatrices.Count != 0) {
-            Graphics.DrawMeshInstanced(mesh, 0, grassMaterial, meshInstanceMatrices);
+        // update noise sampled terrain height if user changed during runtime
+        if (terrainHeight != previousTerrainHeight) {
+            // set terrain height data from material
+            grassMaterial.SetFloat("_TerrainHeight", terrainHeight);
+        }
+
+        // draw plane mesh instances
+        if (planeMeshInstanceMatrices != null && planeMeshInstanceMatrices.Count != 0) {
+            Graphics.DrawMeshInstanced(planeMesh, 0, grassMaterial, planeMeshInstanceMatrices);
+        }
+
+
+        if (modelInstanceMatrices != null && modelInstanceMatrices.Count != 0) {
+            if (modelMesh)
+                Graphics.DrawMeshInstanced(modelMesh, 0, modelMaterial, modelInstanceMatrices);
+            else {
+                for (int i = 0; i < modelMeshFilters.Length; i++) {
+                    for (int j = 0; j < modelMeshFilters[i].sharedMesh.subMeshCount; j++) {
+                        for (int k = 0; k < modelRenderers[i].sharedMaterials.Length; k++) {
+                            if (modelRenderers[i].sharedMaterials[k] != null)
+                                Graphics.DrawMeshInstanced(modelMeshFilters[i].sharedMesh, j, modelRenderers[i].sharedMaterials[k], modelInstanceMatrices);
+                        }
+                    }
+                }
+            }
         }
 
        previousDensity = density;
-     
+       previousTerrainHeight = terrainHeight;
     }
 
-    private void OnDrawGizmos() {
-        // Gizmos.color = Color.red;
 
-        // foreach (var pos in bladeRootPositions) {
-        //     Gizmos.DrawSphere(pos, 0.02f);
-        // }  
 
-    }
-
+    // unused, was planning to generate grass vertices with this
     void CalculateBladePositions(int i_density) {
         bladeRootPositions.Clear();
 
         // if this is our first time calculating triangle mass centers
         if (bladeRootPositionCenters.Count == 0) {
             // we only need 1 blade root position, which is the mass center of each triangle
-            for (int i = 0; i < mesh.triangles.Length - 2; i += 3) {
+            for (int i = 0; i < planeMesh.triangles.Length - 2; i += 3) {
                 // get all indices of vertices of the current triangle
-                int triangleIndexA = mesh.triangles[i];
-                int triangleIndexB = mesh.triangles[i + 1];
-                int triangleIndexC = mesh.triangles[i + 2];
+                int triangleIndexA = planeMesh.triangles[i];
+                int triangleIndexB = planeMesh.triangles[i + 1];
+                int triangleIndexC = planeMesh.triangles[i + 2];
 
                 // calculate mass center of the current triangle
-                Vector3 midPointB_C = (mesh.vertices[triangleIndexB] + mesh.vertices[triangleIndexC]) / 2.0f;
+                Vector3 midPointB_C = (planeMesh.vertices[triangleIndexB] + planeMesh.vertices[triangleIndexC]) / 2.0f;
 
                 // mass center is on the 2/3 of vector[A -> midpointB_C]
-                Vector3 massCenter = mesh.vertices[triangleIndexA] + (0.66f) * (midPointB_C - mesh.vertices[triangleIndexA]);
+                Vector3 massCenter = planeMesh.vertices[triangleIndexA] + (0.66f) * (midPointB_C - planeMesh.vertices[triangleIndexA]);
 
                 // cach mass center of each triangle
                 bladeRootPositionCenters.Add(massCenter);
@@ -124,17 +182,17 @@ public class TestScript : MonoBehaviour
 
             // if density is not 0
             // say density == N, it means from the mass center pointing towards N triangle vertices, we each need one blade inserted between
-            for (int i = 0; i < mesh.triangles.Length - 2; i += 3) {
+            for (int i = 0; i < planeMesh.triangles.Length - 2; i += 3) {
                 // get all indices of vertices of the current triangle
-                int triangleIndexA = mesh.triangles[i];
-                int triangleIndexB = mesh.triangles[i + 1];
-                int triangleIndexC = mesh.triangles[i + 2];
+                int triangleIndexA = planeMesh.triangles[i];
+                int triangleIndexB = planeMesh.triangles[i + 1];
+                int triangleIndexC = planeMesh.triangles[i + 2];
 
                 // calculate vector[massCenter -> 3 triangle vertices]
                 Vector3 massCenter = bladeRootPositionCenters[i / 3];
-                Vector3 centerToA = mesh.vertices[triangleIndexA] - massCenter;
-                Vector3 centerToB = mesh.vertices[triangleIndexB] - massCenter;
-                Vector3 centerToC = mesh.vertices[triangleIndexC] - massCenter;
+                Vector3 centerToA = planeMesh.vertices[triangleIndexA] - massCenter;
+                Vector3 centerToB = planeMesh.vertices[triangleIndexB] - massCenter;
+                Vector3 centerToC = planeMesh.vertices[triangleIndexC] - massCenter;
 
                 // calculate offset vectors in 3 directions (1 point -> divide by 2 ... etc)
                 Vector3 offsetVectorCenterToA = centerToA / (float)(i_density + 1);

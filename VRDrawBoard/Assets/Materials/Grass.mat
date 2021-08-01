@@ -23,6 +23,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DensityNoiseMap:
+        m_Texture: {fileID: 2800000, guid: 884aa8fb552d81f4ba1dfed39b94f58c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DensityNoiseTexture:
         m_Texture: {fileID: 2800000, guid: 5f6634dd112e4c84888c8e329beda86e, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -47,6 +51,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: a617b0f5269b96c40bea2add3df1bbe0, type: 3}
         m_Scale: {x: 9.44, y: 6.04}
         m_Offset: {x: -1.69, y: 1.58}
+    - _GrassDensityNoiseMap:
+        m_Texture: {fileID: 2800000, guid: 5f6634dd112e4c84888c8e329beda86e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -55,12 +63,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MountainNoiseMap:
+        m_Texture: {fileID: 2800000, guid: 6bcc65b7c6e3a0b448d7801bfc56842f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: 884aa8fb552d81f4ba1dfed39b94f58c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TerrainNoiseMap:
+        m_Texture: {fileID: 2800000, guid: 884aa8fb552d81f4ba1dfed39b94f58c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _WindDistortionMap:
@@ -87,20 +107,22 @@ Material:
     - _GrassBlades: 2
     - _GrassHeight: 3
     - _GrassWidth: 0
-    - _MaxCameraDistance: 10
+    - _MaxCameraDistance: 50
     - _Metallic: 0.65
     - _MinimunGrassBlades: 0
     - _Mode: 0
+    - _MountainHeight: 0
     - _NoiseScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _PositionRandomness: 1.25
+    - _PositionRandomness: 0.8
     - _Rotation: 0
     - _RotationRandom: 0.174
     - _Smoothness: 0.62
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TerrainHeight: 0
     - _TessellationUniform: 7.5
     - _TranslucentGain: 0.27
     - _TriangleOffset: 10
@@ -110,7 +132,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BottomColor: {r: 0.018689923, g: 0.18867922, b: 0.018689923, a: 1}
-    - _Color: {r: 0.041963343, g: 0.38679248, b: 0.081285976, a: 1}
+    - _Color: {r: 0.11712353, g: 0.5283019, b: 0.1638483, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _TopColor: {r: 0.3822612, g: 0.7830189, b: 0, a: 1}
     - _WindFrequency: {r: 0.05, g: 0.05, b: 0, a: 0}
