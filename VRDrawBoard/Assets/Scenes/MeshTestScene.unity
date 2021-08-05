@@ -154,7 +154,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: 30
+  m_CookingOptions: -1
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &119120879
 MeshRenderer:
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrainMeshFilter: {fileID: 119120880}
   modelPrefab: {fileID: 100004, guid: d027af1092f6b434090f040565e7e656, type: 3}
-  m_density: 0
+  m_density: 1000
 --- !u!43 &173454284
 Mesh:
   m_ObjectHideFlags: 0

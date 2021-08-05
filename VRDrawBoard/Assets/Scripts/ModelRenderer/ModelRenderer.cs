@@ -91,8 +91,7 @@ public class ModelRenderer : MonoBehaviour
 
             int mfSubMeshCount = mf.sharedMesh.subMeshCount;
             for (int i = 0; i < mfSubMeshCount; i++) {
-                foreach (Matrix4x4 matrix in m_modelInstanceMatrices)
-                    Graphics.DrawMesh(mf.sharedMesh, matrix, mf.GetComponent<Renderer>().sharedMaterial, 0, null, i);
+                Graphics.DrawMeshInstanced(mf.sharedMesh, i, mf.GetComponent<Renderer>().sharedMaterial, m_modelInstanceMatrices);
             }
         }
     }
